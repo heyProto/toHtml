@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:400,900|Quattrocento:400,700');
+body {
+  min-width: initial !important;
+  overflow:hidden;
+}
+.clearfix {
+  clear: both;
+}
+.link-image{
+  height:100%;
+}
+.protograph-card {
+  position: relative;
+  overflow: hidden;
+  letter-spacing: normal;
+  box-sizing: border-box;
+}
+
+.protograph-col4-mode {
+  /* height: 70px; */
+  width: 300px;
+}
+.protograph-col7-mode {
+  /* height: 70px; */
+  width: 540px;
+}
