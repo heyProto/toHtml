@@ -6,15 +6,14 @@
     "data": {
       "id": "/properties/data",
       "properties": {
-        "section": {
+        "html_string": {
           "id": "/properties/data/properties/section",
           "type": "string",
-          "title": "Section",
-          "default": ""
+          "title": "HTML"
         },
-        "text": {
+        "style": {
           "id": "/properties/data/properties/title",
-          "title": "Title",
+          "title": "Style",
           "type": "string"
         }
       },

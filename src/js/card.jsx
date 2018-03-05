@@ -61,7 +61,9 @@ export default class HTMLCard extends React.Component {
       this.componentDidUpdate();
     }
   }
-
+  componentDidUpdate(){
+    
+  }
   renderCol7() {
     if (this.state.fetchingData ){
       return(<div>Loading</div>)
