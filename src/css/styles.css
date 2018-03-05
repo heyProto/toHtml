@@ -9,6 +9,9 @@ body {
 .link-image{
   height:100%;
 }
+.proto-HTML-card{
+  overflow: auto;
+}
 .protograph-card {
   position: relative;
   overflow: hidden;

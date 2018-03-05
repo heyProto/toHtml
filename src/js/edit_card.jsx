@@ -145,7 +145,6 @@ export default class editHTMLCard extends React.Component {
   }
 
   getData() {
-
     return {
       dataJSON: this.state.dataJSON,
       title: title
@@ -171,7 +170,24 @@ export default class editHTMLCard extends React.Component {
   }
   
   componentDidUpdate(){
-
+    if($('textarea').length !== 0){
+      if($('textarea[data-autoresize]').length === 0){
+        $('textarea').attr("data-autoresize",'');
+        $('textarea').attr("rows",function(){
+          return this.innerHTML.split('\n').length;
+        });
+      }
+      if($('textarea[data-autoresize]').length !== 0){
+        $.each($('textarea[data-autoresize]'), function() {
+          var offset = this.offsetHeight - this.clientHeight;
+          console.log(offset);
+          var resizeTextarea = function(el) {
+              $(el).css('height', 'auto').css('height', el.scrollHeight + offset);
+          };
+          $(this).on('keyup input', function() { resizeTextarea(this); }).removeAttr('data-autoresize');
+      });
+      }
+    }
   }
   render() {
     if (this.state.fetchingData) {
@@ -192,6 +208,7 @@ export default class editHTMLCard extends React.Component {
                   onSubmit={((e) => this.onSubmitHandler(e))}
                   onChange={((e) => this.onChangeHandler(e))}
                   validate={this.formValidator}
+                  uiSchema={this.state.uiSchemaJSON.data}
                   formData={this.renderFormData()}>
                   <br/>
                   <a id="protograph-prev-link" className={`${this.state.publishing ? 'protograph-disable' : ''}`} onClick={((e) => this.onPrevHandler(e))}>{this.showLinkText()} </a>

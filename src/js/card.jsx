@@ -13,7 +13,6 @@ export default class HTMLCard extends React.Component {
       editable: false,
       text: undefined
     };
-
     if (this.props.dataJSON) {
       stateVar.fetchingData = false;
       stateVar.dataJSON = this.props.dataJSON;
@@ -30,7 +29,6 @@ export default class HTMLCard extends React.Component {
     if(this.props.editable){
       stateVar.editable=this.props.editable;
     }
-
     this.state = stateVar;
   }
 
@@ -39,6 +37,7 @@ export default class HTMLCard extends React.Component {
   }
 
   componentDidMount() {
+
     if (this.state.fetchingData) {
       let items_to_fetch = [
         axios.get(this.props.dataURL)
@@ -52,7 +51,6 @@ export default class HTMLCard extends React.Component {
         let stateVar = {
           fetchingData: false,
           dataJSON: card.data,
-          text: card.data.data.text,
           siteConfigs: site_configs ? site_configs.data : this.state.siteConfigs
         };
         this.setState(stateVar);
@@ -62,15 +60,16 @@ export default class HTMLCard extends React.Component {
     }
   }
   componentDidUpdate(){
-    
+      document.getElementsByTagName('head')[0].append(document.createElement('style'));
+      let styles = document.getElementsByTagName('style');
+      styles[styles.length-1].innerHTML = this.state.dataJSON.data.style;
   }
   renderCol7() {
     if (this.state.fetchingData ){
       return(<div>Loading</div>)
     } else {
-
       return (
-        <div className="protograph-col7-mode proto-HTML-card" dangerouslySetInnerHTML={{__html: this.state.text}}>
+        <div className="protograph-col7-mode proto-HTML-card" dangerouslySetInnerHTML={{__html: this.state.dataJSON.data.html_string}}>
         </div>
       )
     }
@@ -80,7 +79,7 @@ export default class HTMLCard extends React.Component {
       return(<div>Loading</div>)
     } else {
       return (
-        <div className="protograph-col4-mode proto-HTML-card" dangerouslySetInnerHTML={{__html: this.state.text}}>
+        <div className="protograph-col4-mode proto-HTML-card" dangerouslySetInnerHTML={{__html: this.state.dataJSON.data.html_string}}>
         </div>
       )
     }
