@@ -4,6 +4,7 @@
   "description": "",
   "dependencies": {
     "axios": "^0.16.1",
+    "css": "^2.2.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4"
   },

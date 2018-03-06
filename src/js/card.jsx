@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-
+import css from 'css';
 export default class HTMLCard extends React.Component {
   constructor(props) {
     super(props)
@@ -37,7 +37,7 @@ export default class HTMLCard extends React.Component {
   }
 
   componentDidMount() {
-
+    document.getElementsByTagName('head')[0].append(document.createElement('style'));
     if (this.state.fetchingData) {
       let items_to_fetch = [
         axios.get(this.props.dataURL)
@@ -59,17 +59,35 @@ export default class HTMLCard extends React.Component {
       this.componentDidUpdate();
     }
   }
+  stripScripts(s) {
+    var div = document.createElement('div');
+    div.innerHTML = s;
+    var scripts = div.getElementsByTagName('script');
+    var i = scripts.length;
+    while (i--) {
+      scripts[i].parentNode.removeChild(scripts[i]);
+    }
+    return div.innerHTML;
+  }
   componentDidUpdate(){
-      document.getElementsByTagName('head')[0].append(document.createElement('style'));
-      let styles = document.getElementsByTagName('style');
-      styles[styles.length-1].innerHTML = this.state.dataJSON.data.style;
+      let obj , style, styles;
+      obj = css.parse(this.state.dataJSON.data.style);
+      obj.stylesheet.rules.forEach(rule=>{
+        rule.selectors = rule.selectors.map(selector=>{
+          return ".proto-HTML-card "+selector;
+        })
+      })
+      style = css.stringify(obj);
+      styles = document.getElementsByTagName('style');
+      styles[styles.length-1].innerHTML = style;
   }
   renderCol7() {
     if (this.state.fetchingData ){
       return(<div>Loading</div>)
     } else {
+      let html = this.stripScripts(this.state.dataJSON.data.html_string);
       return (
-        <div className="protograph-col7-mode proto-HTML-card" dangerouslySetInnerHTML={{__html: this.state.dataJSON.data.html_string}}>
+        <div className="protograph-col7-mode proto-HTML-card" dangerouslySetInnerHTML={{__html: html}}>
         </div>
       )
     }
@@ -78,8 +96,10 @@ export default class HTMLCard extends React.Component {
     if (this.state.fetchingData ){
       return(<div>Loading</div>)
     } else {
+      let html = this.stripScripts(this.state.dataJSON.data.html_string);
+
       return (
-        <div className="protograph-col4-mode proto-HTML-card" dangerouslySetInnerHTML={{__html: this.state.dataJSON.data.html_string}}>
+        <div className="protograph-col4-mode proto-HTML-card" dangerouslySetInnerHTML={{__html: html}}>
         </div>
       )
     }
