@@ -34,7 +34,7 @@ export default class editHTMLCard extends React.Component {
       optionalConfigJSON: this.state.optionalConfigJSON,
       optionalConfigSchemaJSON: this.state.optionalConfigSchemaJSON
     }
-    getDataObj["name"] = this.state.title.substr(0,225); // Reduces the name to ensure the slug does not get too long
+    getDataObj["name"] = this.state.dataJSON.data.html_string.substr(0,100); // Reduces the name to ensure the slug does not get too long
     return getDataObj;
   }
 
@@ -168,7 +168,7 @@ export default class editHTMLCard extends React.Component {
       }
     })
   }
-  
+
   componentDidUpdate(){
     if($('textarea').length !== 0){
       if($('textarea[data-autoresize]').length === 0){
