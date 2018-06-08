@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import axios from 'axios';
+import { render } from 'react-dom';
+import { all as axiosAll, get as axiosGet, spread as axiosSpread } from 'axios';
 import Card from './card.jsx';
 import JSONSchemaForm from '../../lib/js/react-jsonschema-form';
 
@@ -14,8 +14,6 @@ export default class editHTMLCard extends React.Component {
       publishing: false,
       schemaJSON: undefined,
       fetchingData: true,
-      optionalConfigJSON: {},
-      optionalConfigSchemaJSON: undefined,
       uiSchemaJSON: {},
     }
     // this.refLinkSourcesURL = window.ref_link_sources_url
@@ -31,8 +29,6 @@ export default class editHTMLCard extends React.Component {
       step: this.state.step,
       dataJSON: this.state.dataJSON,
       schemaJSON: this.state.schemaJSON,
-      optionalConfigJSON: this.state.optionalConfigJSON,
-      optionalConfigSchemaJSON: this.state.optionalConfigSchemaJSON
     }
     getDataObj["name"] = this.state.dataJSON.data.html_string.substr(0,100); // Reduces the name to ensure the slug does not get too long
     return getDataObj;
@@ -42,21 +38,17 @@ export default class editHTMLCard extends React.Component {
     // get sample json data based on type i.e string or object.
 
     if (this.state.fetchingData){
-      axios.all([
-        axios.get(this.props.dataURL),
-        axios.get(this.props.schemaURL),
-        axios.get(this.props.optionalConfigURL),
-        axios.get(this.props.optionalConfigSchemaURL),
-        axios.get(this.props.uiSchemaURL),
-        axios.get(this.props.siteConfigURL)
+      axiosAll([
+        axiosGet(this.props.dataURL),
+        axiosGet(this.props.schemaURL),
+        axiosGet(this.props.uiSchemaURL),
+        axiosGet(this.props.siteConfigURL)
       ])
-      .then(axios.spread((card, schema, opt_config, opt_config_schema, uiSchema, site_configs) => {
+      .then(axiosSpread((card, schema, uiSchema, site_configs) => {
         let stateVars = {
           fetchingData: false,
           dataJSON: card.data,
           schemaJSON: schema.data,
-          optionalConfigJSON: opt_config.data,
-          optionalConfigSchemaJSON: opt_config_schema.data,
           uiSchemaJSON: uiSchema.data,
           siteConfigs: site_configs.data
         }
@@ -237,8 +229,8 @@ export default class editHTMLCard extends React.Component {
                     mode={this.state.mode}
                     dataJSON={this.state.dataJSON}
                     schemaJSON={this.state.schemaJSON}
-                    optionalConfigJSON={this.state.optionalConfigJSON}
-                    optionalConfigSchemaJSON={this.state.optionalConfigSchemaJSON}
+                    siteConfigs={this.state.siteConfigs}
+
                   />
                 </div>
               </div>

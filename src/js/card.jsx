@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import axios from 'axios';
+import { render } from 'react-dom';
+import { all as axiosAll, get as axiosGet, spread as axiosSpread } from 'axios';
 import css from 'css';
 export default class HTMLCard extends React.Component {
   constructor(props) {
@@ -8,7 +8,6 @@ export default class HTMLCard extends React.Component {
     let stateVar = {
       fetchingData: true,
       dataJSON: {},
-      optionalConfigJSON: {},
       content: undefined,
       editable: false,
       text: undefined
@@ -22,9 +21,6 @@ export default class HTMLCard extends React.Component {
       stateVar.text = this.props.text;
     }
 
-    if (this.props.optionalConfigJSON) {
-      stateVar.optionalConfigJSON = this.props.optionalConfigJSON;
-    }
 
     if(this.props.editable){
       stateVar.editable=this.props.editable;
@@ -40,14 +36,14 @@ export default class HTMLCard extends React.Component {
     document.getElementsByTagName('head')[0].append(document.createElement('style'));
     if (this.state.fetchingData) {
       let items_to_fetch = [
-        axios.get(this.props.dataURL)
+        axiosGet(this.props.dataURL)
       ];
 
       if (this.props.siteConfigURL) {
-        items_to_fetch.push(axios.get(this.props.siteConfigURL));
+        items_to_fetch.push(axiosGet(this.props.siteConfigURL));
       }
 
-      axios.all(items_to_fetch).then(axios.spread((card, site_configs) => {
+      axiosAll(items_to_fetch).then(axiosSpread((card, site_configs) => {
         let stateVar = {
           fetchingData: false,
           dataJSON: card.data,
