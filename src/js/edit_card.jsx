@@ -127,14 +127,15 @@ export default class editHTMLCard extends React.Component {
   }
 
   showButtonText() {
-    switch(this.state.step) {
-      case 1:
-        return 'Next';
-        break;
-      case 2:
-        return 'Publish';
-        break;
-    }
+    return 'Publish'
+    // switch(this.state.step) {
+    //   case 1:
+    //     return 'Next';
+    //     break;
+    //   case 2:
+    //     return 'Publish';
+    //     break;
+    // }
   }
 
   onPrevHandler() {
